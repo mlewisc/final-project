@@ -9,6 +9,12 @@ export default function App() {
   const [currentPage, setCurrentPage] = React.useState("home");
   const [showTriviaSettings, setShowTriviaSettings] = React.useState(false);
   const [isPlayAgainFlow, setIsPlayAgainFlow] = React.useState(false);
+  const [totals, setTotals] = React.useState({
+    games_played: 0,
+    score: 0,
+    correct: 0,
+    incorrect: 0,
+  });
 
   const [gameInfo, setGameInfo] = React.useState({
     avatar_index: undefined,
@@ -25,9 +31,21 @@ export default function App() {
     setGameInfo(gameInfo);
   }
 
-  function onGameEnd(playAgain) {
+  function onGameEnd(
+    playAgain,
+    totals = {
+      games_played: 0,
+      score: 0,
+      correct: 0,
+      incorrect: 0,
+    }
+  ) {
     // Clear last questions data
     setQuestionsData();
+
+    // Set the total score/game/correct/incorrect
+    setTotals(totals);
+    // How the settings version for who is playing again
     if (playAgain) {
       setShowTriviaSettings(true);
       setIsPlayAgainFlow(true);
@@ -43,6 +61,7 @@ export default function App() {
           timer: undefined,
         },
       });
+      // Don't start the Play Again flow and nagivate to the Homepage
       setIsPlayAgainFlow(false);
       navigate("home");
     }
@@ -108,6 +127,7 @@ export default function App() {
 
       {currentPage === "game" && (
         <Game
+          totals={totals}
           gameDetails={gameInfo}
           onGameEnd={onGameEnd}
           questionData={questionsData}

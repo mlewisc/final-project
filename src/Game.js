@@ -10,13 +10,21 @@ export default function Game(props) {
 
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [isValidTime, setIsValidTime] = React.useState(true);
-  const [totalAnswered, setTotalAnswered] = React.useState(0);
+  const [numAnswered, setNumAnswered] = React.useState(0);
   const [userScore, setUserScore] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(true);
   const [showTimesUp, setShowTimesUp] = React.useState(false);
   const [roundOver, setRoundOver] = React.useState(false);
   const [leaderboardData, setLeaderboardData] = React.useState([]);
   const [docId, setDocId] = React.useState();
+  const [totalGamesPlayed, setTotalGamesPlayed] = React.useState(
+    props.totals.games_played
+  );
+  const [totalScore, setTotalScore] = React.useState(props.totals.score);
+  const [totalCorrect, setTotalCorrect] = React.useState(props.totals.correct);
+  const [totalIncorrect, setTotalIncorrect] = React.useState(
+    props.totals.incorrect
+  );
 
   // Timer Countdown
   const children = ({ remainingTime }) => {
@@ -37,14 +45,18 @@ export default function Game(props) {
   };
 
   function onQuestionComplete(questionCorrect) {
+    const newNumAnswered = numAnswered + 1;
+    let newUserScore = userScore;
+    // Increment score  if the question was answered correctly
+    if (questionCorrect) {
+      newUserScore = userScore + 1;
+      setUserScore(newUserScore);
+    }
     // Pause the timer after user selects an answer
     setIsPlaying(false);
     // Increment the number of answered questions
-    setTotalAnswered(totalAnswered + 1);
-    // Increment score  if the question was answered correctly
-    if (questionCorrect) {
-      setUserScore(userScore + 1);
-    }
+    setNumAnswered(newNumAnswered);
+
     // Hide the Time's up message after half a second
     setTimeout(() => {
       setShowTimesUp(false);
@@ -52,8 +64,9 @@ export default function Game(props) {
 
     // Go to the next question and reset the timer after 3 seconds
     setTimeout(() => {
+      // End the game if all the questions were answered
       if (questionIndex === props.questionData.length - 1) {
-        onEndOfGame();
+        onEndOfGame(newNumAnswered, newUserScore);
       } else {
         setQuestionIndex(questionIndex + 1);
         setIsPlaying(true);
@@ -62,23 +75,44 @@ export default function Game(props) {
     }, 3000);
   }
 
-  function onEndOfGame() {
-    // Update the local game values
-    // Check if I have a document id from Firebase
-    // If I have, then I update the value at that id in the firabse using doc.(id).update{ write values being updated}
+  function onEndOfGame(newNumAnswered, newUserScore) {
+    const newTotalGamesPlayed = totalGamesPlayed + 1;
+    const newTotalScore = totalScore + newUserScore;
+    const newTotalIncorrect = totalIncorrect + (newNumAnswered - newUserScore);
+    const newTotalCorrect = totalCorrect + newUserScore;
 
-    // If I DON'T hava a doc id, then write the local values to the database
-    // Store the data from this round in the Firebase database
-    db.collection("quizine-leaderboard")
-      .add({
+    // Update the local game values
+    setTotalGamesPlayed(newTotalGamesPlayed);
+    setTotalScore(newTotalScore);
+    setTotalIncorrect(newTotalIncorrect);
+    setTotalCorrect(newTotalCorrect);
+
+    // If there's no existing doc id, then write the local values to the database
+    if (docId === undefined) {
+      // Store the data from this round in the Firebase database
+      db.collection("quizine-leaderboard")
+        .add({
+          player_name: props.gameDetails.player_name,
+          avatar_index: props.gameDetails.avatar_index,
+          games_played: newTotalGamesPlayed,
+          correct_answers: newTotalCorrect,
+          wrong_answers: newTotalIncorrect,
+          total_points: newTotalScore,
+        })
+        .then((response) => setDocId(response.id));
+
+      // If there is an existing doc id (meaning user is playing again)
+    } else {
+      // Update the values in the Firebase on the doc with the given id
+      db.collection("quizine-leaderboard").doc(docId).update({
         player_name: props.gameDetails.player_name,
         avatar_index: props.gameDetails.avatar_index,
-        games_played: 1,
-        correct_answers: userScore,
-        wrong_answers: totalAnswered - userScore,
-        total_points: userScore,
-      })
-      .then((response) => setDocId(response.id));
+        games_played: newTotalGamesPlayed,
+        correct_answers: newTotalCorrect,
+        wrong_answers: newTotalIncorrect,
+        total_points: newTotalScore,
+      });
+    }
 
     // Update roundOver state so leaderboard can appear in the DOM
     setRoundOver(true);
@@ -106,7 +140,17 @@ export default function Game(props) {
 
   // Take the user back to the home page when the EXIT button is clicked
   function onEndGame(playAgain) {
-    props.onGameEnd(playAgain);
+    const totals = {
+      games_played: totalGamesPlayed,
+      score: totalScore,
+      correct: totalCorrect,
+      incorrect: totalIncorrect,
+    };
+    if (playAgain) {
+      props.onGameEnd(playAgain, totals);
+    } else {
+      props.onGameEnd(playAgain);
+    }
   }
 
   return (
@@ -147,7 +191,7 @@ export default function Game(props) {
         <div className="game-display">
           <div className="score">
             <p>
-              Your Score: {userScore} of {totalAnswered}
+              Your Score: {userScore} of {numAnswered}
             </p>
           </div>
 
@@ -184,6 +228,12 @@ export default function Game(props) {
               gameDetails={props.gameDetails}
               leaderboardData={leaderboardData}
               currentDocId={docId}
+              gameSummaryDetails={{
+                games_played: totalGamesPlayed,
+                total_score: totalScore,
+                total_correct: totalCorrect,
+                total_incorrect: totalIncorrect,
+              }}
             />
           )}
         </div>

@@ -64,7 +64,7 @@ export default function GameSummary(props) {
               <div className="player-info-details">
                 <h2>{props.gameDetails.player_name}</h2>
                 <div className="points">
-                  <h3>245</h3>
+                  <h3>{props.gameSummaryDetails.total_score}</h3>
                   <h4>total points</h4>
                 </div>
               </div>
@@ -73,15 +73,21 @@ export default function GameSummary(props) {
               <h5>Your Results Overview</h5>
               <div className="summary-grid">
                 <div className="summary-item">
-                  <div className="circle">3</div>
+                  <div className="circle">
+                    {props.gameSummaryDetails.games_played}
+                  </div>
                   <span>Total Games</span>
                 </div>
                 <div className="summary-item">
-                  <div className="circle green-circle">21</div>
+                  <div className="circle green-circle">
+                    {props.gameSummaryDetails.total_correct}
+                  </div>
                   <span>Total Correct</span>
                 </div>
                 <div className="summary-item">
-                  <div className="circle red-circle">9</div>
+                  <div className="circle red-circle">
+                    {props.gameSummaryDetails.total_incorrect}
+                  </div>
                   <span>Total Incorrect</span>
                 </div>
               </div>
