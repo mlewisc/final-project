@@ -2,20 +2,27 @@ import React from "react";
 import PlayerCustomization from "./PlayerCustomization";
 import Settings from "./Settings";
 import Loading from "./Loading";
+import { categoryIds } from "./CategoriesUtils";
 
 export default function StartTrivia(props) {
-  const [visible, setVisibility] = React.useState(
-    props.entryInfo.show_settings
+  const [settingsVisible, setSettingsVisibility] = React.useState(
+    props.showSettings
   );
   const [settings, setSettings] = React.useState({
-    category: props.entryInfo.selected_category
-      ? props.entryInfo.selected_category
-      : "general_knowledge",
-    question_count: 10,
-    timer: 10,
+    category: props.entryInfo.settings.category
+      ? props.entryInfo.settings.category
+      : categoryIds.general_knowledge,
+    question_count: props.entryInfo.settings.question_count
+      ? props.entryInfo.settings.question_count
+      : 10,
+    timer: props.entryInfo.settings.timer ? props.entryInfo.settings.timer : 10,
   });
-  const [playerName, setPlayerName] = React.useState();
-  const [avatarIndex, setAvatarIndex] = React.useState();
+  const [playerName, setPlayerName] = React.useState(
+    props.entryInfo.player_name
+  );
+  const [avatarIndex, setAvatarIndex] = React.useState(
+    props.entryInfo.avatar_index
+  );
   const [showAvatarError, setAvatarError] = React.useState(false);
   const [disable, setDisabled] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -52,14 +59,14 @@ export default function StartTrivia(props) {
       let gameDetails = {
         avatar_index: avatarIndex,
         player_name: playerName,
-        game_settings: settings,
+        settings: settings,
       };
       // Update the game information
       props.onStartGameCallback(gameDetails);
 
       // Fetch the data from the API
       fetch(
-        `https://the-trivia-api.com/api/questions?limit=${gameDetails.game_settings.question_count}&categories=${gameDetails.game_settings.category}`
+        `https://the-trivia-api.com/api/questions?limit=${gameDetails.settings.question_count}&categories=${gameDetails.settings.category}`
       )
         .then((response) => response.json())
         .then((questionData) => {
@@ -77,7 +84,7 @@ export default function StartTrivia(props) {
   console.log(avatarIndex);
 
   function handleSettingsPopup() {
-    setVisibility(!visible);
+    setSettingsVisibility(!settingsVisible);
   }
 
   return (
@@ -102,8 +109,10 @@ export default function StartTrivia(props) {
               </button>
             </div>
 
-            {visible && (
+            {settingsVisible && (
               <Settings
+                onStartGame={onStartGame}
+                isPlayAgainFlow={props.isPlayAgainFlow}
                 settings={settings}
                 onSettingsCloseCallback={handleSettingsPopup}
                 updateSettings={updateSettings}

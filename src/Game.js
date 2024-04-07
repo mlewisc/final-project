@@ -16,7 +16,7 @@ export default function Game(props) {
   const [showTimesUp, setShowTimesUp] = React.useState(false);
   const [roundOver, setRoundOver] = React.useState(false);
   const [leaderboardData, setLeaderboardData] = React.useState([]);
-  const docIdRef = React.useRef();
+  const [docId, setDocId] = React.useState();
 
   // Timer Countdown
   const children = ({ remainingTime }) => {
@@ -78,7 +78,7 @@ export default function Game(props) {
         wrong_answers: totalAnswered - userScore,
         total_points: userScore,
       })
-      .then((response) => (docIdRef.current = response.id));
+      .then((response) => setDocId(response.id));
 
     // Update roundOver state so leaderboard can appear in the DOM
     setRoundOver(true);
@@ -105,8 +105,8 @@ export default function Game(props) {
   }
 
   // Take the user back to the home page when the EXIT button is clicked
-  function endGame() {
-    props.exit("home");
+  function onEndGame(playAgain) {
+    props.onGameEnd(playAgain);
   }
 
   return (
@@ -119,7 +119,7 @@ export default function Game(props) {
               <CountdownCircleTimer
                 className="glow"
                 isPlaying={isPlaying}
-                duration={props.gameDetails.game_settings.timer}
+                duration={props.gameDetails.settings.timer}
                 colors={["#00FCFF", "#00FCFF", "#00FCFF", "#A30000"]}
                 colorsTime={[10, 6, 3, 0]}
                 onComplete={() => {
@@ -137,7 +137,10 @@ export default function Game(props) {
               ></CountdownCircleTimer>
             </div>
           </div>
-          <button className="exit" onClick={endGame}>
+          <button
+            className="exit"
+            onClick={() => onEndGame(/* playAgain */ false)}
+          >
             Exit Game
           </button>
         </div>
@@ -160,6 +163,7 @@ export default function Game(props) {
                   />
                 );
               }
+              return undefined;
             })}
           {showTimesUp && (
             <div className="popup-background">
@@ -176,10 +180,10 @@ export default function Game(props) {
           )}
           {roundOver && (
             <GameSummary
-              onExit={endGame}
+              onEndGame={onEndGame}
               gameDetails={props.gameDetails}
               leaderboardData={leaderboardData}
-              currentDocId={docIdRef}
+              currentDocId={docId}
             />
           )}
         </div>

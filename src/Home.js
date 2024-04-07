@@ -23,7 +23,11 @@ export default function Home(props) {
           <button
             id="play-now"
             onClick={() =>
-              props.onNavigateCallback("start-trivia", { show_settings: false })
+              props.onNavigateCallback(
+                "start-trivia",
+                /* showSettings */ false,
+                /* selectedCategory */ undefined
+              )
             }
           >
             <i className="material-symbols-rounded">play_circle</i>Play now
@@ -45,10 +49,11 @@ export default function Home(props) {
                     className="card"
                     key={"card-" + index}
                     onClick={() => {
-                      props.onNavigateCallback("start-trivia", {
-                        selected_category: category.id,
-                        show_settings: true,
-                      });
+                      props.onNavigateCallback(
+                        "start-trivia",
+                        /* showSettings */ true,
+                        /* selectedCategory */ category.id
+                      );
                     }}
                   >
                     <div id={category.id} className="icon-container">

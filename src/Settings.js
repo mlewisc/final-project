@@ -2,9 +2,9 @@ import React from "react";
 import { categoryIdLabelMap } from "./CategoriesUtils";
 
 export default function Settings(props) {
-  const categorySelectRef = React.useRef();
-  const questionsSelectRef = React.useRef();
-  const timerSelectRef = React.useRef();
+  const categorySelectRef = React.useRef(props.settings.category);
+  const questionsSelectRef = React.useRef(props.settings.question_count);
+  const timerSelectRef = React.useRef(props.settings.timer);
   function onCategoryUpdate() {
     props.updateSettings({
       ...props.settings,
@@ -26,17 +26,23 @@ export default function Settings(props) {
     });
   }
 
+  function onCloseSettings() {
+    props.onSettingsCloseCallback();
+  }
+
   return (
     <React.Fragment>
       <div className={"settings-container"}>
         <div className="settings-heading">
           <h2 className="gill-font">Settings</h2>
-          <i
-            className="material-symbols-rounded icon-menu"
-            onClick={props.onSettingsCloseCallback}
-          >
-            close
-          </i>
+          {!props.isPlayAgainFlow && (
+            <i
+              className="material-symbols-rounded icon-menu"
+              onClick={onCloseSettings}
+            >
+              close
+            </i>
+          )}
         </div>
         <label htmlFor="categories">Questions Category</label>
         <select
@@ -86,6 +92,11 @@ export default function Settings(props) {
           <option value={30}>30 seconds</option>
           <option value={60}>60 seconds</option>
         </select>
+        {props.isPlayAgainFlow && (
+          <button className="start-game" onClick={props.onStartGame}>
+            Start game
+          </button>
+        )}
       </div>
     </React.Fragment>
   );

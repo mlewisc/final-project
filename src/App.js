@@ -3,20 +3,17 @@ import Navigation from "./Navigation";
 import Home from "./Home";
 import HowItWorks from "./HowItWorks";
 import StartTrivia from "./StartTrivia";
-import { categoryIds } from "./CategoriesUtils";
 import Game from "./Game";
 
 export default function App() {
   const [currentPage, setCurrentPage] = React.useState("home");
-  const [homeNavigationInfo, setHomeNavInfo] = React.useState({
-    show_settings: false,
-    selected_category: categoryIds.general_knowledge,
-  });
+  const [showTriviaSettings, setShowTriviaSettings] = React.useState(false);
+  const [isPlayAgainFlow, setIsPlayAgainFlow] = React.useState(false);
 
   const [gameInfo, setGameInfo] = React.useState({
     avatar_index: undefined,
     player_name: undefined,
-    game_settings: {
+    settings: {
       category: undefined,
       question_count: undefined,
       timer: undefined,
@@ -28,7 +25,28 @@ export default function App() {
     setGameInfo(gameInfo);
   }
 
-  // function onGameEnd()
+  function onGameEnd(playAgain) {
+    // Clear last questions data
+    setQuestionsData();
+    if (playAgain) {
+      setShowTriviaSettings(true);
+      setIsPlayAgainFlow(true);
+      navigate("start-trivia");
+    } else {
+      setShowTriviaSettings(false);
+      setGameInfo({
+        avatar_index: undefined,
+        player_name: undefined,
+        settings: {
+          category: undefined,
+          question_count: undefined,
+          timer: undefined,
+        },
+      });
+      setIsPlayAgainFlow(false);
+      navigate("home");
+    }
+  }
 
   function updateData(questionsData) {
     setQuestionsData(questionsData);
@@ -39,8 +57,17 @@ export default function App() {
     window.scrollTo(0, 0);
   }
 
-  function navigateFromHome(page, navigationInfo) {
-    setHomeNavInfo(navigationInfo);
+  function navigateFromHome(page, showSettings, selectedCategory) {
+    setGameInfo({
+      player_name: gameInfo.player_name,
+      avatar_index: gameInfo.avatar_index,
+      settings: {
+        category: selectedCategory,
+        question_count: gameInfo.settings.question_count,
+        timer: gameInfo.settings.timer,
+      },
+    });
+    setShowTriviaSettings(showSettings);
     setCurrentPage(page);
     window.scrollTo(0, 0);
   }
@@ -70,7 +97,9 @@ export default function App() {
 
       {currentPage === "start-trivia" && (
         <StartTrivia
-          entryInfo={homeNavigationInfo}
+          isPlayAgainFlow={isPlayAgainFlow}
+          showSettings={showTriviaSettings}
+          entryInfo={gameInfo}
           onNavigateCallback={navigate}
           onStartGameCallback={onGameStart}
           onFetchDataCallback={updateData}
@@ -80,11 +109,10 @@ export default function App() {
       {currentPage === "game" && (
         <Game
           gameDetails={gameInfo}
-          exit={navigate}
+          onGameEnd={onGameEnd}
           questionData={questionsData}
         />
       )}
-      {/* onGameEnd={onGameEnd} */}
     </React.Fragment>
   );
 }
