@@ -5,9 +5,9 @@ import "material-symbols";
 import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+
 root.render(
   <React.StrictMode>
-    <App isDesktop={isDesktop} />
+    <App />
   </React.StrictMode>
 );

@@ -6,6 +6,8 @@ import StartTrivia from "./StartTrivia";
 import Game from "./Game";
 
 export default function App(props) {
+  const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+
   const [currentPage, setCurrentPage] = React.useState("home");
   const [showTriviaSettings, setShowTriviaSettings] = React.useState(false);
   const [isPlayAgainFlow, setIsPlayAgainFlow] = React.useState(false);
@@ -97,9 +99,7 @@ export default function App(props) {
       currentPage === "how-it-works" ||
       currentPage === "start-trivia"
     ) {
-      return (
-        <Navigation onNavigateCallback={navigate} isDesktop={props.isDesktop} />
-      );
+      return <Navigation onNavigateCallback={navigate} />;
     }
   }
 
@@ -124,7 +124,7 @@ export default function App(props) {
           onNavigateCallback={navigate}
           onStartGameCallback={onGameStart}
           onFetchDataCallback={updateData}
-          isDesktop={props.isDesktop}
+          isDesktop={isDesktop}
         />
       )}
 

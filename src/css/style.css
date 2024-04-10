@@ -7,6 +7,10 @@ html {
   outline-offset: 5px;
 }
 
+#root {
+  height: 100%;
+}
+
 body,
 h1,
 h2,
@@ -29,6 +33,7 @@ main.background {
   padding-inline: 5%;
   padding-block: 3rem 6rem;
   margin: 0;
+  height: 100vh;
 }
 
 /* SKIP CONTENT*/
@@ -699,6 +704,7 @@ button.answer {
   margin-bottom: 0.25rem;
   text-align: left;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .player-info-details {
@@ -1304,6 +1310,7 @@ tr.active-row.light td:nth-of-type(3) {
 
   button.answer {
     height: 6.165rem;
+    width: 32rem;
   }
 
   form#player-customization button.start-game:hover,
@@ -1331,9 +1338,11 @@ tr.active-row.light td:nth-of-type(3) {
 
   .answers-list {
     display: grid;
-    grid-template-columns: auto auto;
-    column-gap: 2rem;
-    margin-inline: 4rem;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+    margin-inline: 6rem;
+    justify-content: center;
   }
 
   main.background {

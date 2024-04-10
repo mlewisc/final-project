@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Navigation(props) {
-  const [visible, setVisibility] = React.useState(props.isDesktop);
+  const [visible, setVisibility] = React.useState(
+    window.matchMedia("(min-width: 1024px)").matches
+  );
   const [menuIcon, setMenuIcon] = React.useState("menu");
   const [selectedPage, setSelectedPage] = React.useState("home");
+  const [isDesktop, setIsDesktop] = React.useState(
+    window.matchMedia("(min-width: 1024px)").matches
+  );
 
-  console.log(visible);
+  useEffect(() => {
+    function handleResize() {
+      const newIsDesktop = window.matchMedia("(min-width: 1024px)").matches;
+      if (isDesktop || newIsDesktop) {
+        setVisibility(newIsDesktop);
+        setMenuIcon("menu");
+      }
+      setIsDesktop(newIsDesktop);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isDesktop, setIsDesktop]);
+
   function doMenu() {
     if (menuIcon === "menu") {
       setMenuIcon("close");
@@ -19,7 +38,7 @@ export default function Navigation(props) {
   function onMenuItemClick(page) {
     setSelectedPage(page);
     props.onNavigateCallback(page);
-    setVisibility(props.isDesktop);
+    setVisibility(isDesktop);
     setMenuIcon("menu");
   }
 
