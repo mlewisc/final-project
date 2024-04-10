@@ -5,7 +5,7 @@ import HowItWorks from "./HowItWorks";
 import StartTrivia from "./StartTrivia";
 import Game from "./Game";
 
-export default function App() {
+export default function App(props) {
   const [currentPage, setCurrentPage] = React.useState("home");
   const [showTriviaSettings, setShowTriviaSettings] = React.useState(false);
   const [isPlayAgainFlow, setIsPlayAgainFlow] = React.useState(false);
@@ -97,7 +97,9 @@ export default function App() {
       currentPage === "how-it-works" ||
       currentPage === "start-trivia"
     ) {
-      return <Navigation onNavigateCallback={navigate} />;
+      return (
+        <Navigation onNavigateCallback={navigate} isDesktop={props.isDesktop} />
+      );
     }
   }
 
@@ -122,6 +124,7 @@ export default function App() {
           onNavigateCallback={navigate}
           onStartGameCallback={onGameStart}
           onFetchDataCallback={updateData}
+          isDesktop={props.isDesktop}
         />
       )}
 

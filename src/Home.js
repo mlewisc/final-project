@@ -16,22 +16,24 @@ export default function Home(props) {
             alt="an illustration of a grey serving platter lid opened with a hand"
             width="95%"
           />
-          <h1>
-            Serving up your <strong className="gill-font">trivia</strong> on a
-            platter
-          </h1>
-          <button
-            id="play-now"
-            onClick={() =>
-              props.onNavigateCallback(
-                "start-trivia",
-                /* showSettings */ false,
-                /* selectedCategory */ undefined
-              )
-            }
-          >
-            <i className="material-symbols-rounded">play_circle</i>Play now
-          </button>
+          <div className="hero-text-container">
+            <h1>
+              Serving up your <strong className="gill-font">trivia</strong> on a
+              platter
+            </h1>
+            <button
+              id="play-now"
+              onClick={() =>
+                props.onNavigateCallback(
+                  "start-trivia",
+                  /* showSettings */ false,
+                  /* selectedCategory */ undefined
+                )
+              }
+            >
+              <i className="material-symbols-rounded">play_circle</i>Play now
+            </button>
+          </div>
         </div>
 
         <div id="main">
@@ -48,12 +50,22 @@ export default function Home(props) {
                   <div
                     className="card"
                     key={"card-" + index}
+                    tabIndex={0}
                     onClick={() => {
                       props.onNavigateCallback(
                         "start-trivia",
                         /* showSettings */ true,
                         /* selectedCategory */ category.id
                       );
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        props.onNavigateCallback(
+                          "start-trivia",
+                          true,
+                          category.id
+                        );
+                      }
                     }}
                   >
                     <div id={category.id} className="icon-container">

@@ -58,7 +58,7 @@ export default function Question(props) {
 
   return (
     <React.Fragment>
-      <div className="question-answer-layout">
+      <div id="main" className="question-answer-layout">
         <h1 className="question">{question}</h1>
 
         <div className="answers-list">

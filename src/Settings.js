@@ -32,13 +32,25 @@ export default function Settings(props) {
 
   return (
     <React.Fragment>
-      <div className={"settings-container"}>
+      <div
+        className={
+          props.isPlayAgainFlow && props.isDesktop
+            ? "settings-container full-width"
+            : "settings-container"
+        }
+      >
         <div className="settings-heading">
           <h2 className="gill-font">Settings</h2>
           {!props.isPlayAgainFlow && (
             <i
               className="material-symbols-rounded icon-menu"
               onClick={onCloseSettings}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onCloseSettings();
+                }
+              }}
             >
               close
             </i>
@@ -53,6 +65,7 @@ export default function Settings(props) {
           defaultValue={props.settings.category}
           onChange={onCategoryUpdate}
           ref={categorySelectRef}
+          tabIndex={0}
         >
           {Object.keys(categoryIdLabelMap).map((id) => {
             return (

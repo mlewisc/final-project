@@ -16,7 +16,7 @@ export default function GameSummary(props) {
                 <thead>
                   <tr>
                     <th>Rank</th>
-                    <th></th>
+                    <th>.</th>
                     <th>Player</th>
                     <th>Total Score</th>
                   </tr>
@@ -40,7 +40,7 @@ export default function GameSummary(props) {
                           <div className="little-circle">
                             <img
                               src={listOfImgs[row.avatar_index][0]}
-                              alt={listOfImgs[listOfImgs[row.avatar_index][1]]}
+                              alt={listOfImgs[row.avatar_index][1]}
                             />
                           </div>
                         </td>

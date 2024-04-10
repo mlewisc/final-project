@@ -1,10 +1,11 @@
 import React from "react";
 
 export default function Navigation(props) {
-  const [visible, setVisibility] = React.useState(false);
+  const [visible, setVisibility] = React.useState(props.isDesktop);
   const [menuIcon, setMenuIcon] = React.useState("menu");
   const [selectedPage, setSelectedPage] = React.useState("home");
 
+  console.log(visible);
   function doMenu() {
     if (menuIcon === "menu") {
       setMenuIcon("close");
@@ -18,7 +19,7 @@ export default function Navigation(props) {
   function onMenuItemClick(page) {
     setSelectedPage(page);
     props.onNavigateCallback(page);
-    setVisibility(false);
+    setVisibility(props.isDesktop);
     setMenuIcon("menu");
   }
 
@@ -35,7 +36,6 @@ export default function Navigation(props) {
           <i
             tabIndex={0}
             className="material-symbols-rounded icon-menu"
-            style={{ fontSize: "3rem" }}
             onClick={doMenu}
           >
             {menuIcon}
@@ -47,6 +47,7 @@ export default function Navigation(props) {
               <li
                 className={selectedPage === "home" ? "active" : undefined}
                 onClick={() => onMenuItemClick("home")}
+                tabIndex={0}
               >
                 Home
               </li>
@@ -55,6 +56,7 @@ export default function Navigation(props) {
                   selectedPage === "how-it-works" ? "active" : undefined
                 }
                 onClick={() => onMenuItemClick("how-it-works")}
+                tabIndex={0}
               >
                 How it works
               </li>

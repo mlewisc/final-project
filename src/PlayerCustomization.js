@@ -41,6 +41,12 @@ export default function PlayerCustomization(props) {
                 className={`avatar-circle ${selectClassName}`}
                 key={"avatar" + index}
                 onClick={() => onAvatarSelect(index)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    onAvatarSelect(index);
+                  }
+                }}
               >
                 <img src={item[0]} alt={item[1]} />
               </div>

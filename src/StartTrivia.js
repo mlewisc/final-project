@@ -90,7 +90,7 @@ export default function StartTrivia(props) {
   return (
     <React.Fragment>
       <main style={{ marginBottom: "0" }}>
-        <div className="hero-banner banner-content-centered">
+        <div className="hero-banner banner-content-centered start-page">
           <div className="banner-content-centered">
             <h1>Time to play!</h1>
             <p>
@@ -116,6 +116,7 @@ export default function StartTrivia(props) {
                 settings={settings}
                 onSettingsCloseCallback={handleSettingsPopup}
                 updateSettings={updateSettings}
+                isDesktop={props.isDesktop}
               />
             )}
           </div>
