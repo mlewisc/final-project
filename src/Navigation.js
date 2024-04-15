@@ -56,6 +56,11 @@ export default function Navigation(props) {
             tabIndex={0}
             className="material-symbols-rounded icon-menu"
             onClick={doMenu}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                doMenu();
+              }
+            }}
           >
             {menuIcon}
           </i>
@@ -67,6 +72,11 @@ export default function Navigation(props) {
                 className={selectedPage === "home" ? "active" : undefined}
                 onClick={() => onMenuItemClick("home")}
                 tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    onMenuItemClick("home");
+                  }
+                }}
               >
                 Home
               </li>
@@ -76,6 +86,11 @@ export default function Navigation(props) {
                 }
                 onClick={() => onMenuItemClick("how-it-works")}
                 tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    onMenuItemClick("how-it-works");
+                  }
+                }}
               >
                 How it works
               </li>
@@ -83,6 +98,11 @@ export default function Navigation(props) {
                 <button
                   id="play-now-nav"
                   onClick={() => onMenuItemClick("start-trivia")}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      onMenuItemClick("start-trivia");
+                    }
+                  }}
                 >
                   <i className="material-symbols-rounded">play_circle</i>Play
                   now

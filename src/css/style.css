@@ -2,7 +2,7 @@ html {
   color: #292929;
 }
 
-*:focus {
+*:focus-visible {
   outline: 3px solid #ffc042;
   outline-offset: 5px;
 }
