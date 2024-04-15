@@ -828,13 +828,13 @@ button.answer {
 
 .table-container {
   display: flex;
-  width: 110%;
+  /* width: 110%; */
   justify-content: center;
 }
 
 .table {
   border-collapse: collapse;
-  width: 80%;
+  /* width: 80%; */
   color: white;
   font-size: 0.875rem;
   font-weight: 500;
