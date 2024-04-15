@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "./static/css/main.ed87968d.css",
+    "main.js": "./static/js/main.cd4227bb.js",
+    "static/media/material-symbols-rounded.woff2": "./static/media/material-symbols-rounded.43a1182ab3e237d347a5.woff2",
+    "static/media/material-symbols-outlined.woff2": "./static/media/material-symbols-outlined.1cf8749a65657da66f02.woff2",
+    "static/media/material-symbols-sharp.woff2": "./static/media/material-symbols-sharp.5b726661f89d25415c14.woff2",
+    "static/media/cake.svg": "./static/media/cake.aee0a0aa7d143de8cd022983118b0ab9.svg",
+    "static/media/orange.svg": "./static/media/orange.1af12c02103bfa956ddc0da6b7232470.svg",
+    "static/media/popcorn.svg": "./static/media/popcorn.3c14debac053a6347380a500341b147f.svg",
+    "static/media/salad.svg": "./static/media/salad.5f05b0aea32bba340413a1487d49c332.svg",
+    "static/media/avocado.svg": "./static/media/avocado.f68ff35141f62faa137d0830895dc963.svg",
+    "static/media/donut.svg": "./static/media/donut.8b953d81f15268b85f87239f0d327331.svg",
+    "static/media/icecream.svg": "./static/media/icecream.8149018c3f4e6e31a23886fa4ef0ae32.svg",
+    "static/media/burger.svg": "./static/media/burger.7dbec15c8155f15c92172b671006447f.svg",
+    "static/media/fries.svg": "./static/media/fries.b07da652d2cf23a2d10bc5d91eee514e.svg",
+    "static/media/apple.svg": "./static/media/apple.2bcba78c4a7be24b3741204eb1cb7a04.svg",
+    "static/media/serving-platter.svg": "./static/media/serving-platter.d3a6b5c54cbf59179e65486f2480e419.svg",
+    "static/media/category.svg": "./static/media/category.f4e24c6af203e3a47c8d2d870501dafc.svg",
+    "static/media/podium.svg": "./static/media/podium.79dbe53d6b0c99513d904cbc18764ca7.svg",
+    "static/media/questions.svg": "./static/media/questions.a767143ae7129b5d5cdb237c59fd4b50.svg",
+    "static/media/avatar.svg": "./static/media/avatar.be8790b15bc54086b5030f2539c380af.svg",
+    "static/media/time.svg": "./static/media/time.f972025e97af17e7440ac6e404a899bb.svg",
+    "static/media/expand_more.svg": "./static/media/expand_more.99577fa51aff2aee84a4.svg",
+    "index.html": "./index.html",
+    "main.ed87968d.css.map": "./static/css/main.ed87968d.css.map",
+    "main.cd4227bb.js.map": "./static/js/main.cd4227bb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ed87968d.css",
+    "static/js/main.cd4227bb.js"
+  ]
+}
